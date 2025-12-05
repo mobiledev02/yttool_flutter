@@ -10,41 +10,109 @@ class PopularHashtagsScreen extends StatefulWidget {
 
 class _PopularHashtagsScreenState extends State<PopularHashtagsScreen> {
   final Map<String, List<String>> _categories = {
+    'General': [
+      '#love',
+      '#instagood',
+      '#photography',
+      '#photooftheday',
+      '#picoftheday',
+      '#instadaily',
+      '#instalike',
+      '#follow',
+      '#followforfollow',
+      '#likeforlike',
+      '#repost',
+      '#happy',
+      '#cute',
+      '#beautiful',
+      '#art',
+      '#style',
+      '#fashion',
+      '#explore',
+      '#explorepage',
+      '#viral',
+      '#trending',
+      '#reels',
+      '#insta',
+      '#bhfyp',
+      '#fyp',
+    ],
     'Gaming': [
       '#gaming',
       '#gamer',
-      '#ps5',
+      '#videogames',
+      '#pcgaming',
+      '#gamingcommunity',
+      '#gaminglife',
+      '#gamers',
+      '#games',
+      '#playstation',
       '#xbox',
       '#nintendo',
-      '#fortnite',
-      '#minecraft',
-      '#callofduty',
+      '#twitch',
       '#streamer',
+      '#gamerlife',
+      '#gamingmemes',
+      '#gamingposts',
+      '#instagaming',
+      '#fortnite',
+      '#pubg',
+      '#callofduty',
       '#esports',
+      '#gamingsetup',
+      '#gamingsetup',
+      '#onlinegaming',
+      '#gamingpc',
     ],
     'Tech': [
       '#tech',
       '#technology',
+      '#innovation',
       '#gadgets',
+      '#electronics',
+      '#smartphone',
       '#iphone',
       '#android',
+      '#software',
       '#programming',
       '#coding',
       '#developer',
-      '#software',
+      '#engineering',
+      '#technews',
       '#ai',
+      '#artificialintelligence',
+      '#techreview',
+      '#futuretech',
+      '#techlover',
+      '#robotics',
+      '#design',
+      '#cybersecurity',
+      '#computers',
     ],
     'Lifestyle': [
       '#lifestyle',
-      '#vlog',
+      '#lifestyleblogger',
       '#dailyvlog',
+      '#vlog',
+      '#travel',
+      '#travelgram',
       '#morningroutine',
-      '#productivity',
       '#motivation',
       '#inspiration',
       '#goals',
       '#life',
       '#wellness',
+      '#fitnessjourney',
+      '#fitness',
+      '#healthylifestyle',
+      '#selfcare',
+      '#mindfulness',
+      '#homeworkout',
+      '#diy',
+      '#blog',
+      '#influencer',
+      '#style',
+      '#fashion',
     ],
     'Education': [
       '#education',
@@ -57,6 +125,15 @@ class _PopularHashtagsScreenState extends State<PopularHashtagsScreen> {
       '#science',
       '#history',
       '#math',
+      '#learningeveryday',
+      '#studytips',
+      '#homework',
+      '#examtime',
+      '#studentslife',
+      '#academic',
+      '#research',
+      '#learningisfun',
+      '#educationmatters',
     ],
     'Entertainment': [
       '#entertainment',
@@ -67,20 +144,44 @@ class _PopularHashtagsScreenState extends State<PopularHashtagsScreen> {
       '#trending',
       '#music',
       '#movie',
+      '#movies',
       '#dance',
       '#challenge',
+      '#reels',
+      '#viralvideos',
+      '#funnyvideos',
+      '#youtuber',
+      '#youtube',
+      '#youtubechannel',
+      '#reelstrending',
+      '#viralreels',
+      '#popculture',
     ],
     'Food': [
       '#food',
       '#foodie',
+      '#foodporn',
+      '#instafood',
+      '#foodstagram',
+      '#foodphotography',
+      '#foodlover',
+      '#yummy',
+      '#delicious',
+      '#foodiegram',
+      '#foodblogger',
+      '#foodies',
+      '#chef',
       '#cooking',
       '#recipe',
-      '#baking',
-      '#delicious',
-      '#yummy',
-      '#dinner',
-      '#lunch',
+      '#homecooking',
+      '#tasty',
+      '#dessert',
       '#breakfast',
+      '#lunch',
+      '#dinner',
+      '#restaurant',
+      '#homemade',
+      '#foodpics',
     ],
   };
 
@@ -105,71 +206,77 @@ class _PopularHashtagsScreenState extends State<PopularHashtagsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Popular Hashtags')),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 60,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              itemCount: _categories.keys.length,
-              itemBuilder: (context, index) {
-                final category = _categories.keys.elementAt(index);
-                final isSelected = category == _selectedCategory;
-                return Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: FilterChip(
-                    label: Text(category),
-                    selected: isSelected,
-                    onSelected: (selected) {
-                      setState(() {
-                        _selectedCategory = category;
-                      });
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '$_selectedCategory Hashtags',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      TextButton.icon(
-                        icon: const Icon(Icons.copy),
-                        label: const Text('Copy All'),
-                        onPressed: _copyAll,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: (_categories[_selectedCategory] ?? []).map((tag) {
-                      return ActionChip(
-                        label: Text(tag),
-                        onPressed: () => _copyHashtag(tag),
-                        avatar: const Icon(Icons.copy, size: 14),
-                      );
-                    }).toList(),
-                  ),
-                ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 60,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
+                itemCount: _categories.keys.length,
+                itemBuilder: (context, index) {
+                  final category = _categories.keys.elementAt(index);
+                  final isSelected = category == _selectedCategory;
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: FilterChip(
+                      label: Text(category),
+                      selected: isSelected,
+                      onSelected: (selected) {
+                        setState(() {
+                          _selectedCategory = category;
+                        });
+                      },
+                    ),
+                  );
+                },
               ),
             ),
-          ),
-        ],
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '$_selectedCategory Hashtags',
+                          style: Theme.of(context).textTheme.titleLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        TextButton.icon(
+                          icon: const Icon(Icons.copy),
+                          label: const Text('Copy All'),
+                          onPressed: _copyAll,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: (_categories[_selectedCategory] ?? []).map((
+                        tag,
+                      ) {
+                        return ActionChip(
+                          label: Text(tag),
+                          onPressed: () => _copyHashtag(tag),
+                          avatar: const Icon(Icons.copy, size: 14),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

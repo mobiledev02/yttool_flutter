@@ -80,37 +80,39 @@ class _TagsExtractorScreenState extends State<TagsExtractorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Tags Extractor')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            InputField(
-              controller: _urlController,
-              hintText: 'Paste YouTube Video URL',
-              suffixIcon: IconButton(
-                icon: const Icon(Icons.paste),
-                onPressed: () async {
-                  // TODO: Implement paste
-                },
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              InputField(
+                controller: _urlController,
+                hintText: 'Paste YouTube Video URL',
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.paste),
+                  onPressed: () async {
+                    // TODO: Implement paste
+                  },
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            CustomButton(
-              text: 'Extract Tags',
-              onPressed: _extractTags,
-              isLoading: _isLoading,
-            ),
-            if (_errorMessage != null) ...[
-              const SizedBox(height: 24),
-              Text(
-                _errorMessage!,
-                style: const TextStyle(color: Colors.red),
-                textAlign: TextAlign.center,
+              const SizedBox(height: 16),
+              CustomButton(
+                text: 'Extract Tags',
+                onPressed: _extractTags,
+                isLoading: _isLoading,
               ),
+              if (_errorMessage != null) ...[
+                const SizedBox(height: 24),
+                Text(
+                  _errorMessage!,
+                  style: const TextStyle(color: Colors.red),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+              if (_videoData != null) _buildTagsList(_videoData!),
             ],
-            if (_videoData != null) _buildTagsList(_videoData!),
-          ],
+          ),
         ),
       ),
     );

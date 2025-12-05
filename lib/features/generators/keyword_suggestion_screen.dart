@@ -95,69 +95,72 @@ class _KeywordSuggestionScreenState extends State<KeywordSuggestionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Keyword Suggestion')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            InputField(
-              controller: _topicController,
-              hintText: 'Enter topic (e.g., "Flutter Tutorial")',
-              suffixIcon: const Icon(Icons.search),
-            ),
-            const SizedBox(height: 16),
-            CustomButton(
-              text: 'Generate Keywords',
-              onPressed: _generateKeywords,
-              isLoading: _isLoading,
-            ),
-            if (_errorMessage != null) ...[
-              const SizedBox(height: 24),
-              Text(
-                _errorMessage!,
-                style: const TextStyle(color: Colors.red),
-                textAlign: TextAlign.center,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              InputField(
+                controller: _topicController,
+                hintText: 'Enter topic (e.g., "Flutter Tutorial")',
+                suffixIcon: const Icon(Icons.search),
               ),
-            ],
-            if (_keywords.isNotEmpty) ...[
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Suggestions (${_keywords.length})',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+              const SizedBox(height: 16),
+              CustomButton(
+                text: 'Generate Keywords',
+                onPressed: _generateKeywords,
+                isLoading: _isLoading,
+              ),
+              if (_errorMessage != null) ...[
+                const SizedBox(height: 24),
+                Text(
+                  _errorMessage!,
+                  style: const TextStyle(color: Colors.red),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+              if (_keywords.isNotEmpty) ...[
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Suggestions (${_keywords.length})',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  TextButton.icon(
-                    icon: const Icon(Icons.copy),
-                    label: const Text('Copy All'),
-                    onPressed: _copyAll,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: _keywords.length,
-                separatorBuilder: (context, index) => const Divider(height: 1),
-                itemBuilder: (context, index) {
-                  final keyword = _keywords[index];
-                  return ListTile(
-                    title: Text(keyword),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.copy, size: 20),
-                      onPressed: () => _copyKeyword(keyword),
+                    TextButton.icon(
+                      icon: const Icon(Icons.copy),
+                      label: const Text('Copy All'),
+                      onPressed: _copyAll,
                     ),
-                    contentPadding: EdgeInsets.zero,
-                    dense: true,
-                  );
-                },
-              ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: _keywords.length,
+                  separatorBuilder: (context, index) =>
+                      const Divider(height: 1),
+                  itemBuilder: (context, index) {
+                    final keyword = _keywords[index];
+                    return ListTile(
+                      title: Text(keyword),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.copy, size: 20),
+                        onPressed: () => _copyKeyword(keyword),
+                      ),
+                      contentPadding: EdgeInsets.zero,
+                      dense: true,
+                    );
+                  },
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );

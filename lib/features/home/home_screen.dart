@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import 'package:yttool_flutter/core/constants/app_colors.dart';
-import 'package:yttool_flutter/core/services/storage_service.dart';
 import 'package:yttool_flutter/features/channel_analysis/channel_name_generator_screen.dart';
 import 'package:yttool_flutter/features/channel_analysis/channel_name_ideas_screen.dart';
 import 'package:yttool_flutter/features/channel_analysis/earning_calculator_screen.dart';
@@ -137,7 +136,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: PageView(
         controller: _pageController,
-        physics: const NeverScrollableScrollPhysics(),
+        onPageChanged: (index) {
+          _controller.jumpTo(index);
+        },
         children: [
           _buildHomeTab(),
           const SavedScreen(),
@@ -180,7 +181,11 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
         onTap: (index) {
-          _pageController.jumpToPage(index);
+          _pageController.animateToPage(
+            index,
+            duration: const Duration(milliseconds: 100),
+            curve: Curves.easeInOut,
+          );
         },
         kIconSize: 24.0,
       ),
@@ -227,9 +232,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: const InputField(
+                          child: InputField(
                             hintText: 'Enter video or channel URL',
                             suffixIcon: Icon(Icons.search),
+                            onSubmitted: (value) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      VideoAnalysisScreen(initialUrl: value),
+                                ),
+                              );
+                            },
                           ),
                         ),
                         const SizedBox(height: 18),
@@ -254,7 +268,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: ToolCard(
                                   title: 'Video Analysis',
                                   icon: Icons.analytics,
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                            const VideoAnalysisScreen(),
+                                      ),
+                                    );
+                                  },
                                   iconColor: Colors.blue,
                                 ),
                               ),
@@ -264,7 +286,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: ToolCard(
                                   title: 'Thumbnail Downloader',
                                   icon: Icons.image,
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                            const ThumbnailDownloaderScreen(),
+                                      ),
+                                    );
+                                  },
                                   iconColor: Colors.orange,
                                 ),
                               ),
@@ -274,7 +304,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: ToolCard(
                                   title: 'Tags Extractor',
                                   icon: Icons.tag,
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                            const TagsExtractorScreen(),
+                                      ),
+                                    );
+                                  },
                                   iconColor: Colors.green,
                                 ),
                               ),

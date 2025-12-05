@@ -92,63 +92,65 @@ class _AiTagsGeneratorScreenState extends State<AiTagsGeneratorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('AI Tags Generator')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            InputField(
-              controller: _topicController,
-              hintText: 'Enter topic (e.g., "Flutter State Management")',
-              suffixIcon: const Icon(Icons.tag),
-            ),
-            const SizedBox(height: 16),
-            CustomButton(
-              text: 'Generate Tags',
-              onPressed: _generateTags,
-              isLoading: _isLoading,
-            ),
-            if (_errorMessage != null) ...[
-              const SizedBox(height: 24),
-              Text(
-                _errorMessage!,
-                style: const TextStyle(color: Colors.red),
-                textAlign: TextAlign.center,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              InputField(
+                controller: _topicController,
+                hintText: 'Enter topic (e.g., "Flutter State Management")',
+                suffixIcon: const Icon(Icons.tag),
               ),
-            ],
-            if (_tags.isNotEmpty) ...[
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Generated Tags (${_tags.length})',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextButton.icon(
-                    icon: const Icon(Icons.copy),
-                    label: const Text('Copy All'),
-                    onPressed: _copyAll,
-                  ),
-                ],
+              const SizedBox(height: 16),
+              CustomButton(
+                text: 'Generate Tags',
+                onPressed: _generateTags,
+                isLoading: _isLoading,
               ),
-              const SizedBox(height: 12),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: _tags
-                    .map(
-                      (tag) => ActionChip(
-                        label: Text(tag),
-                        onPressed: () => _copyTag(tag),
+              if (_errorMessage != null) ...[
+                const SizedBox(height: 24),
+                Text(
+                  _errorMessage!,
+                  style: const TextStyle(color: Colors.red),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+              if (_tags.isNotEmpty) ...[
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Generated Tags (${_tags.length})',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
                       ),
-                    )
-                    .toList(),
-              ),
+                    ),
+                    TextButton.icon(
+                      icon: const Icon(Icons.copy),
+                      label: const Text('Copy All'),
+                      onPressed: _copyAll,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: _tags
+                      .map(
+                        (tag) => ActionChip(
+                          label: Text(tag),
+                          onPressed: () => _copyTag(tag),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );

@@ -98,111 +98,113 @@ class _TitleGeneratorScreenState extends State<TitleGeneratorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('AI Title Generator')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            InputField(
-              controller: _topicController,
-              hintText: 'Enter video topic',
-              suffixIcon: const Icon(Icons.title),
-            ),
-            const SizedBox(height: 16),
-            CustomButton(
-              text: 'Generate Titles',
-              onPressed: _generateTitles,
-              isLoading: _isLoading,
-            ),
-            if (_errorMessage != null) ...[
-              const SizedBox(height: 24),
-              Text(
-                _errorMessage!,
-                style: const TextStyle(color: Colors.red),
-                textAlign: TextAlign.center,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              InputField(
+                controller: _topicController,
+                hintText: 'Enter video topic',
+                suffixIcon: const Icon(Icons.title),
               ),
-            ],
-            if (_titles.isNotEmpty) ...[
-              const SizedBox(height: 24),
-              Text(
-                'Generated Titles (${_titles.length})',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              const SizedBox(height: 16),
+              CustomButton(
+                text: 'Generate Titles',
+                onPressed: _generateTitles,
+                isLoading: _isLoading,
               ),
-              const SizedBox(height: 12),
-              ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: _titles.length,
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 12),
-                itemBuilder: (context, index) {
-                  final item = _titles[index];
-                  return Card(
-                    child: ListTile(
-                      title: Text(
-                        item['title'],
-                        style: const TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                      subtitle: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 2,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: Text(
-                              item['type'],
-                              style: const TextStyle(fontSize: 12),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            '${item['title'].length} chars',
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(6),
-                            decoration: BoxDecoration(
-                              color: _getScoreColor(
-                                item['score'],
-                              ).withValues(alpha: 0.1),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Text(
-                              '${item['score']}',
-                              style: TextStyle(
-                                color: _getScoreColor(item['score']),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
+              if (_errorMessage != null) ...[
+                const SizedBox(height: 24),
+                Text(
+                  _errorMessage!,
+                  style: const TextStyle(color: Colors.red),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+              if (_titles.isNotEmpty) ...[
+                const SizedBox(height: 24),
+                Text(
+                  'Generated Titles (${_titles.length})',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: _titles.length,
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 12),
+                  itemBuilder: (context, index) {
+                    final item = _titles[index];
+                    return Card(
+                      child: ListTile(
+                        title: Text(
+                          item['title'],
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                        subtitle: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Text(
+                                item['type'],
+                                style: const TextStyle(fontSize: 12),
                               ),
                             ),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.copy),
-                            onPressed: () => _copyTitle(item['title']),
-                          ),
-                        ],
+                            const SizedBox(width: 8),
+                            Text(
+                              '${item['title'].length} chars',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                color: _getScoreColor(
+                                  item['score'],
+                                ).withValues(alpha: 0.1),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Text(
+                                '${item['score']}',
+                                style: TextStyle(
+                                  color: _getScoreColor(item['score']),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.copy),
+                              onPressed: () => _copyTitle(item['title']),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
+                    );
+                  },
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );

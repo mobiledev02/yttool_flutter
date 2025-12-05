@@ -89,63 +89,65 @@ class _HashtagGeneratorScreenState extends State<HashtagGeneratorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('AI Hashtag Generator')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            InputField(
-              controller: _topicController,
-              hintText: 'Enter topic (e.g., "Gaming Setup")',
-              suffixIcon: const Icon(Icons.numbers),
-            ),
-            const SizedBox(height: 16),
-            CustomButton(
-              text: 'Generate Hashtags',
-              onPressed: _generateHashtags,
-              isLoading: _isLoading,
-            ),
-            if (_errorMessage != null) ...[
-              const SizedBox(height: 24),
-              Text(
-                _errorMessage!,
-                style: const TextStyle(color: Colors.red),
-                textAlign: TextAlign.center,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              InputField(
+                controller: _topicController,
+                hintText: 'Enter topic (e.g., "Gaming Setup")',
+                suffixIcon: const Icon(Icons.numbers),
               ),
-            ],
-            if (_hashtags.isNotEmpty) ...[
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Generated Hashtags (${_hashtags.length})',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextButton.icon(
-                    icon: const Icon(Icons.copy),
-                    label: const Text('Copy All'),
-                    onPressed: _copyAll,
-                  ),
-                ],
+              const SizedBox(height: 16),
+              CustomButton(
+                text: 'Generate Hashtags',
+                onPressed: _generateHashtags,
+                isLoading: _isLoading,
               ),
-              const SizedBox(height: 12),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: _hashtags
-                    .map(
-                      (tag) => ActionChip(
-                        label: Text(tag),
-                        onPressed: () => _copyHashtag(tag),
+              if (_errorMessage != null) ...[
+                const SizedBox(height: 24),
+                Text(
+                  _errorMessage!,
+                  style: const TextStyle(color: Colors.red),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+              if (_hashtags.isNotEmpty) ...[
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Generated Hashtags (${_hashtags.length})',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
                       ),
-                    )
-                    .toList(),
-              ),
+                    ),
+                    TextButton.icon(
+                      icon: const Icon(Icons.copy),
+                      label: const Text('Copy All'),
+                      onPressed: _copyAll,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: _hashtags
+                      .map(
+                        (tag) => ActionChip(
+                          label: Text(tag),
+                          onPressed: () => _copyHashtag(tag),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );

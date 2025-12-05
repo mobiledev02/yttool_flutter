@@ -19,121 +19,124 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar.large(
-            title: Text(
-              'Settings',
-              style: theme.textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+      body: Padding(
+        padding: const EdgeInsets.only(bottom: 106.0),
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar.large(
+              title: Text(
+                'Settings',
+                style: theme.textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              centerTitle: false,
+              backgroundColor: theme.scaffoldBackgroundColor,
+              surfaceTintColor: theme.scaffoldBackgroundColor,
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate([
+                  _buildSectionTitle('Appearance'),
+                  _buildSettingsCard(
+                    children: [
+                      _buildSwitchTile(
+                        icon: Icons.dark_mode_outlined,
+                        title: 'Dark Mode',
+                        subtitle: 'Enable dark theme',
+                        value: themeService.isDarkMode,
+                        onChanged: (value) => themeService.toggleTheme(),
+                        color: Colors.purple,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  _buildSectionTitle('General'),
+                  _buildSettingsCard(
+                    children: [
+                      _buildActionTile(
+                        icon: Icons.language,
+                        title: 'Language',
+                        subtitle: 'English',
+                        onTap: () {},
+                        color: Colors.blue,
+                      ),
+                      _buildDivider(),
+                      _buildSwitchTile(
+                        icon: Icons.notifications_outlined,
+                        title: 'Notifications',
+                        subtitle: 'Enable app notifications',
+                        value: _notificationsEnabled,
+                        onChanged: (value) {
+                          setState(() => _notificationsEnabled = value);
+                        },
+                        color: Colors.orange,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  _buildSectionTitle('Data'),
+                  _buildSettingsCard(
+                    children: [
+                      _buildActionTile(
+                        icon: Icons.cleaning_services_outlined,
+                        title: 'Clear Cache',
+                        subtitle: 'Free up space',
+                        onTap: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Cache cleared!')),
+                          );
+                        },
+                        color: Colors.teal,
+                      ),
+                      _buildDivider(),
+                      _buildActionTile(
+                        icon: Icons.history,
+                        title: 'Clear History',
+                        subtitle: 'Remove search history',
+                        onTap: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('History cleared!')),
+                          );
+                        },
+                        color: Colors.red,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  _buildSectionTitle('About'),
+                  _buildSettingsCard(
+                    children: [
+                      _buildActionTile(
+                        icon: Icons.info_outline,
+                        title: 'Version',
+                        subtitle: '1.0.0',
+                        onTap: null, // No action
+                        color: Colors.grey,
+                      ),
+                      _buildDivider(),
+                      _buildActionTile(
+                        icon: Icons.privacy_tip_outlined,
+                        title: 'Privacy Policy',
+                        onTap: () {},
+                        color: Colors.green,
+                      ),
+                      _buildDivider(),
+                      _buildActionTile(
+                        icon: Icons.description_outlined,
+                        title: 'Terms of Service',
+                        onTap: () {},
+                        color: Colors.green,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 48),
+                ]),
               ),
             ),
-            centerTitle: false,
-            backgroundColor: theme.scaffoldBackgroundColor,
-            surfaceTintColor: theme.scaffoldBackgroundColor,
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            sliver: SliverList(
-              delegate: SliverChildListDelegate([
-                _buildSectionTitle('Appearance'),
-                _buildSettingsCard(
-                  children: [
-                    _buildSwitchTile(
-                      icon: Icons.dark_mode_outlined,
-                      title: 'Dark Mode',
-                      subtitle: 'Enable dark theme',
-                      value: themeService.isDarkMode,
-                      onChanged: (value) => themeService.toggleTheme(),
-                      color: Colors.purple,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
-                _buildSectionTitle('General'),
-                _buildSettingsCard(
-                  children: [
-                    _buildActionTile(
-                      icon: Icons.language,
-                      title: 'Language',
-                      subtitle: 'English',
-                      onTap: () {},
-                      color: Colors.blue,
-                    ),
-                    _buildDivider(),
-                    _buildSwitchTile(
-                      icon: Icons.notifications_outlined,
-                      title: 'Notifications',
-                      subtitle: 'Enable app notifications',
-                      value: _notificationsEnabled,
-                      onChanged: (value) {
-                        setState(() => _notificationsEnabled = value);
-                      },
-                      color: Colors.orange,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
-                _buildSectionTitle('Data'),
-                _buildSettingsCard(
-                  children: [
-                    _buildActionTile(
-                      icon: Icons.cleaning_services_outlined,
-                      title: 'Clear Cache',
-                      subtitle: 'Free up space',
-                      onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Cache cleared!')),
-                        );
-                      },
-                      color: Colors.teal,
-                    ),
-                    _buildDivider(),
-                    _buildActionTile(
-                      icon: Icons.history,
-                      title: 'Clear History',
-                      subtitle: 'Remove search history',
-                      onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('History cleared!')),
-                        );
-                      },
-                      color: Colors.red,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
-                _buildSectionTitle('About'),
-                _buildSettingsCard(
-                  children: [
-                    _buildActionTile(
-                      icon: Icons.info_outline,
-                      title: 'Version',
-                      subtitle: '1.0.0',
-                      onTap: null, // No action
-                      color: Colors.grey,
-                    ),
-                    _buildDivider(),
-                    _buildActionTile(
-                      icon: Icons.privacy_tip_outlined,
-                      title: 'Privacy Policy',
-                      onTap: () {},
-                      color: Colors.green,
-                    ),
-                    _buildDivider(),
-                    _buildActionTile(
-                      icon: Icons.description_outlined,
-                      title: 'Terms of Service',
-                      onTap: () {},
-                      color: Colors.green,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 48),
-              ]),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -144,7 +147,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       child: Text(
         title.toUpperCase(),
         style: Theme.of(context).textTheme.labelMedium?.copyWith(
-          color: Theme.of(context).colorScheme.primary,
+          color: Colors.green,
           fontWeight: FontWeight.bold,
           letterSpacing: 1.2,
         ),

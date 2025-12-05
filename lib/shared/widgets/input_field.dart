@@ -7,6 +7,7 @@ class InputField extends StatelessWidget {
   final Widget? suffixIcon;
   final TextInputType? keyboardType;
   final int? maxLines;
+  final Function(String)? onSubmitted;
 
   const InputField({
     super.key,
@@ -16,6 +17,7 @@ class InputField extends StatelessWidget {
     this.suffixIcon,
     this.keyboardType,
     this.maxLines = 1,
+    this.onSubmitted,
   });
 
   @override
@@ -25,6 +27,7 @@ class InputField extends StatelessWidget {
       onChanged: onChanged,
       keyboardType: keyboardType,
       maxLines: maxLines,
+      onSubmitted: onSubmitted,
       decoration: InputDecoration(hintText: hintText, suffixIcon: suffixIcon),
     );
   }
