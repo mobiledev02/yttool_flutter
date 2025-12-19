@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
 import 'package:yttool_flutter/core/constants/app_colors.dart';
 import 'package:yttool_flutter/features/channel_analysis/channel_name_generator_screen.dart';
@@ -8,6 +10,7 @@ import 'package:yttool_flutter/features/channel_analysis/earning_calculator_scre
 import 'package:yttool_flutter/features/channel_analysis/explore_channel_screen.dart';
 import 'package:yttool_flutter/features/channel_analysis/find_competitor_screen.dart';
 import 'package:yttool_flutter/features/generators/ai_tags_generator_screen.dart';
+import 'package:yttool_flutter/features/generators/gemini_content_generator.dart';
 import 'package:yttool_flutter/features/generators/hashtag_generator_screen.dart';
 import 'package:yttool_flutter/features/generators/keyword_suggestion_screen.dart';
 import 'package:yttool_flutter/features/generators/title_generator_screen.dart';
@@ -23,6 +26,9 @@ import 'package:yttool_flutter/shared/widgets/input_field.dart';
 
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 
+import '../../core/models/youtube_ai_response.dart';
+import '../../core/services/gemini_api_service.dart';
+import '../generators/video_script_generator.dart';
 import 'history_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -37,6 +43,19 @@ class _HomeScreenState extends State<HomeScreen> {
   final _controller = NotchBottomBarController(index: 0);
 
   final List<Map<String, dynamic>> _allTools = [
+    {
+      'title': 'Gemini Content Gen',
+      'icon': Icons.auto_awesome,
+      'route': '/gemini-content-gen',
+      'color': Colors.yellow,
+    },
+    {
+      'title': 'Gemini Content Gen',
+      'icon': Icons.subscriptions_rounded,
+      'route': '/gemini-video-script-gen',
+      'color': Colors.cyan,
+    },
+
     {
       'title': 'Video Analysis',
       'icon': Icons.analytics,
@@ -123,6 +142,8 @@ class _HomeScreenState extends State<HomeScreen> {
     },
   ];
 
+  RxBool isLoading = false.obs;
+
   @override
   void dispose() {
     _pageController.dispose();
@@ -140,7 +161,22 @@ class _HomeScreenState extends State<HomeScreen> {
           _controller.jumpTo(index);
         },
         children: [
-          _buildHomeTab(),
+          Obx(() {
+            return Stack(
+              children: [
+                _buildHomeTab(),
+                if (isLoading.value)
+                  Container(
+                    color: Colors.black.withValues(alpha: 0.5),
+                    child: Center(
+                      child: SpinKitSpinningCircle(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          }),
           const SavedScreen(),
           const HistoryScreen(),
           const SettingsScreen(),
@@ -235,7 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: InputField(
                             hintText: 'Enter video or channel URL',
                             suffixIcon: Icon(Icons.search),
-                            onSubmitted: (value) {
+                            onSubmitted: (value) async {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -453,6 +489,21 @@ class _HomeScreenState extends State<HomeScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (_) => const ChannelNameIdeasScreen(),
+                              ),
+                            );
+                          } else if (route == '/gemini-content-gen') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const GeminiContentGenerator(),
+                              ),
+                            );
+                          } else if (route == '/gemini-video-script-gen') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) =>
+                                    const GeminiScriptGeneratorView(),
                               ),
                             );
                           } else {

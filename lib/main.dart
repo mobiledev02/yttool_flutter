@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:yttool_flutter/core/theme/app_theme.dart';
 import 'package:yttool_flutter/features/home/home_screen.dart';
 
@@ -21,7 +22,7 @@ class YToolApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ThemeService>(
       builder: (context, themeService, child) {
-        return MaterialApp(
+        return GetMaterialApp(
           title: 'YT Tool',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,

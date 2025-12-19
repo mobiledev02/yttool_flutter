@@ -159,7 +159,10 @@ class _TitleGeneratorScreenState extends State<TitleGeneratorScreen> {
                               ),
                               child: Text(
                                 item['type'],
-                                style: const TextStyle(fontSize: 12),
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                             const SizedBox(width: 8),
